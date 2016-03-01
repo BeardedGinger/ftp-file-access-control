@@ -31,6 +31,8 @@ class JC_Downloads {
 
 		$this->set_active_page();
 		$this->set_files();
+
+		add_shortcode( 'jc_download_files', array( $this, 'dashboard_shortcode' ) );
 	}
 
 	/**
@@ -87,6 +89,11 @@ class JC_Downloads {
 	}
 
 	/**
-	 * Shortcode for displaying
+	 * Shortcode for displaying files
+	 *
+	 * @since 1.0.0
+	 */
+	public function dashboard_shortcode( $atts, $content = '' ) {
 
+	}
 }

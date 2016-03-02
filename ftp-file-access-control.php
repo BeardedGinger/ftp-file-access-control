@@ -12,3 +12,11 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+include_once( 'includes/Main.php' );
+
+function ftp_file_access_control() {
+	new JC_FTP_File_Access_Main();
+}
+
+ftp_file_access_control();

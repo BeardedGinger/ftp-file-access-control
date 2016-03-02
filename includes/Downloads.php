@@ -109,3 +109,5 @@ class JC_Downloads {
 		return $dashboard;
 	}
 }
+
+new JC_Downloads();

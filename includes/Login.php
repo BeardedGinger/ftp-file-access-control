@@ -93,6 +93,21 @@ class JC_Login_Form {
 	 */
 	private function process_login() {
 
+		if( $this->is_username_legit() ) {
+
+			if( $this->is_password_legit() ) {
+
+				// Set Cookie
+
+				// Redirect to page of given username (slug)
+			}
+
+		} else {
+
+			echo '<p class="login-error">Incorrect username. Please try logging in again</p>';
+			$this->login_form();
+
+		}
 	}
 
 	/**
@@ -100,7 +115,7 @@ class JC_Login_Form {
 	 *
 	 * @since 1.0.0
 	 */
-	private function cookie_set() {
+	private function set_cookie() {
 
 	}
 
@@ -120,7 +135,7 @@ class JC_Login_Form {
 			'meta_value' 	=> 'template-dashboard.php'
 		);
 
-		$dashboard_pages = get_pags( $args );
+		$dashboard_pages = get_pages( $args );
 
 		return $dashboard_pages;
 	}
@@ -133,6 +148,7 @@ class JC_Login_Form {
 	 */
 	private function dashboard_page_slugs() {
 
+		$dashboard_slugs = array();
 		$dashboard_pages = $this->get_dashboard_pages();
 
 		if( $dashboard_pages ) {
@@ -142,6 +158,31 @@ class JC_Login_Form {
 		}
 
 		return $dashboard_slugs;
+	}
+
+	/**
+	 * Array key => value of slug and ID
+	 *
+	 * Used once slug/username verified to get the associated
+	 * password for the page using the page ID
+	 *
+	 * @since 1.0.0
+	 * @uses $this->get_dashboard_pages()
+	 */
+	private function dashboard_page_slug_ids() {
+
+		$dashboard_slug_ids = array();
+		$dashboard_pages = $this->get_dashboard_pages();
+
+		if( $dashboard_pages ) {
+			foreach( $dashboard_pages as $page ) {
+				$dashboard_slug_ids[] = array(
+					$page->post_name => $page->ID
+				);
+			}
+		}
+
+		return $dashboard_slug_ids;
 	}
 
 	/**
@@ -156,7 +197,36 @@ class JC_Login_Form {
 
 		// Too legit to quit
 		if( in_array( $this->slug, $this->dashboard_page_slugs() ) ) {
-			if( $this->password == )
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Ensure the password given matches the password field
+	 * associated with the page given as the username
+	 *
+	 * @since 1.0.0
+	 */
+	private function is_password_legit() {
+
+		$get_associated_id = $this->dashboard_page_slug_ids();
+
+		foreach( $get_associated_id as $ids ) {
+			foreach( $ids as $key => $value ) {
+				if( $key == $this->slug ) {
+					$id = $value;
+				}
+			}
+		}
+
+		$page_password = get_field( 'password', $id );
+
+		if( $page_password == $this->password ) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 

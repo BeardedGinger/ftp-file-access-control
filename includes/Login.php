@@ -49,25 +49,38 @@ class JC_Login_Form {
 
 				$this->process_login();
 
-			} else { ?>
-				<form name="jc_login" id="jc_login" method="post">
-					<label for="jc_user">
-						Username:
-						<br>
-						<input type="text" name="jc_user" id="jc_user" />
-					</label>
-					<label for="jc_pass">
-						Password:
-						<br>
-						<input type="text" name="jc_pass" id="jc_pass" />
-					</label>
-					<input type="submit" value="Login" name="jc_login" />
-				</form>
-			<?php
+			} else {
+
+				$this->login_form();
+
 			}
 
 		$login_form = ob_get_clean();
 		return $login_form;
+	}
+
+	/**
+	 * Login Form
+	 *
+	 * @since 1.0.0
+	 */
+	public function login_form() { ?>
+
+		<form name="jc_login" id="jc_login" method="post">
+			<label for="jc_user">
+				Username:
+				<br>
+				<input type="text" name="jc_user" id="jc_user" />
+			</label>
+			<label for="jc_pass">
+				Password:
+				<br>
+				<input type="text" name="jc_pass" id="jc_pass" />
+			</label>
+			<input type="submit" value="Login" name="jc_login" />
+		</form>
+
+	<?php
 	}
 
 	/**
@@ -78,7 +91,7 @@ class JC_Login_Form {
 	 *
 	 * @since 1.0.0
 	 */
-	public function process_login() {
+	private function process_login() {
 
 	}
 
@@ -143,7 +156,7 @@ class JC_Login_Form {
 
 		// Too legit to quit
 		if( in_array( $this->slug, $this->dashboard_page_slugs() ) ) {
-			if()
+			if( $this->password == )
 		}
 	}
 

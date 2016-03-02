@@ -29,9 +29,6 @@ class JC_Downloads {
 	 */
 	public function __construct() {
 
-		$this->set_active_page();
-		$this->set_files();
-
 		add_shortcode( 'jc_download_files', array( $this, 'dashboard_shortcode' ) );
 	}
 
@@ -98,11 +95,18 @@ class JC_Downloads {
 		ob_start();
 
 		if( $this->is_cookie_set() || is_admin() ) {
+
+			$this->set_active_page();
+			$this->set_files();
+
 			foreach( $this->files as $file ) {
 				echo '<li class="file"><a href="/download-files.php/?file=' . $file . '">' . $file . '</a></li>';
 			}
+
 		} else {
+
 			echo '<a href="/login">Login to the appropriate account</a> to access these files';
+
 		}
 
 		$dashboard = ob_get_clean();

@@ -95,5 +95,17 @@ class JC_Downloads {
 	 */
 	public function dashboard_shortcode( $atts, $content = '' ) {
 
+		ob_start();
+
+		if( $this->is_cookie_set() || is_admin() ) {
+			foreach( $this->files as $file ) {
+				echo '<li class="file"><a href="/download-files.php/?file=' . $file . '">' . $file . '</a></li>';
+			}
+		} else {
+			echo '<a href="/login">Login to the appropriate account</a> to access these files';
+		}
+
+		$dashboard = ob_get_clean();
+		return $dashboard;
 	}
 }

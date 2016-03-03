@@ -30,6 +30,7 @@ class JC_Login_Form {
 	 */
 	public function __construct() {
 
+		add_action( 'wp_enqueue_scripts', array( $this, 'set_cookie' ) );
 		add_shortcode( 'jc_login_form', array( $this, 'login_shortcode' ) );
 	}
 
@@ -64,13 +65,13 @@ class JC_Login_Form {
 	 *
 	 * @since 1.0.0
 	 */
-	public function login_form() { ?>
+	public function login_form( $username = '' ) { ?>
 
 		<form name="jc_login" id="jc_login" method="post">
 			<label for="jc_user">
 				Username:
 				<br>
-				<input type="text" name="jc_user" id="jc_user" />
+				<input type="text" name="jc_user" id="jc_user" placeholder="<?php echo $username; ?>" />
 			</label>
 			<label for="jc_pass">
 				Password:
@@ -97,9 +98,16 @@ class JC_Login_Form {
 
 			if( $this->is_password_legit() ) {
 
-				// Set Cookie
+				$this->set_cookie();
 
-				// Redirect to page of given username (slug)
+				wp_safe_redirect( site_url() . '/' . $this->slug );
+				exit;
+
+			} else {
+
+				echo '<p class="login-error">Incorrect password. Please try logging in again</p>';
+				$this->login_form( $this->slug );
+
 			}
 
 		} else {
@@ -116,6 +124,16 @@ class JC_Login_Form {
 	 * @since 1.0.0
 	 */
 	private function set_cookie() {
+
+		if( !isset( $_COOKIE[ 'jc_' . $this->slug ] ) ) {
+			setcookie( 'jc_' . $this->slug, 1, time()+3600, '', site_url(), false );
+		}
+
+		wp_enqueue_script( 'ftp-file-access', plugin_dir_path(__FILE__) . '../resources/scripts.js', array() );
+		wp_localize_script( 'ftp-file-access', FTP_FILE_ACCESS_CONTROL, array(
+			'slug' 	=> $this->slug;
+		) );
+
 
 	}
 

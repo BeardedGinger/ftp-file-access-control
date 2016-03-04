@@ -44,7 +44,9 @@ class JC_Downloads {
 	public function set_active_page() {
 
 		global $post;
-		$this->active_page = $post->post_name;
+		if( $post ) {
+			$this->active_page = $post->post_name;
+		}
 
 	}
 
@@ -85,7 +87,7 @@ class JC_Downloads {
 			$this->set_files( $post->post_name );
 
 			foreach( $this->files as $file ) {
-				echo '<li class="file"><a href="/download-files.php/?file=' . $file . '&folder=' . $post->post_name . '">' . $file . '</a></li>';
+				echo '<li class="file"><a href="/download-files.php?file=' . $file . '&folder=' . $post->post_name . '">' . $file . '</a></li>';
 			}
 
 		} else {

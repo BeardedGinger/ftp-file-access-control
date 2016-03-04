@@ -9,11 +9,11 @@
  * @since 1.0.0
  */
 
-$file = esc_attr($_GET['file']);
-$folder = esc_attr($_GET['folder']);
+$file = $_GET['file'];
+$folder = $_GET['folder'];
 
 if( isset( $_COOKIE['jc_' . $folder] ) ) {
-	$location = '/clients' . $folder . '/' . $file;
+	$location = 'clients/' . $folder . '/' . $file;
 	header_remove('X-Powered-By');
     header_remove('Transfer-Encoding');
     header_remove('Cache-Control');

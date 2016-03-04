@@ -9,4 +9,18 @@
  * @since 1.0.0
  */
 
-$file = $_GET['file'];
+$file = esc_attr($_GET['file']);
+$folder = esc_attr($_GET['folder']);
+
+if( isset( $_COOKIE['jc_' . $folder] ) ) {
+	$location = '/clients' . $folder . '/' . $file;
+	header_remove('X-Powered-By');
+    header_remove('Transfer-Encoding');
+    header_remove('Cache-Control');
+    header_remove('Pragma');
+    header_remove('Expires');
+    //header('Expires:');
+
+    header('Content-type: wav');
+    readfile($location);
+}

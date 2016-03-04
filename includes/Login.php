@@ -25,12 +25,16 @@ class JC_Login_Form {
 	 */
 	protected $password;
 
+	protected $response;
+
+	protected $username;
+
 	/**
 	 * Constructor (Bob the Builder)
 	 */
 	public function __construct() {
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'set_cookie' ) );
+		add_action( 'init', array( $this, 'process_login' ) );
 		add_shortcode( 'jc_login_form', array( $this, 'login_shortcode' ) );
 	}
 
@@ -43,18 +47,7 @@ class JC_Login_Form {
 
 		ob_start();
 
-			if( isset( $_POST['jc_login'] ) ) {
-
-				$this->slug = esc_attr( $_POST['jc_user'] );
-				$this->password = esc_attr( $_POST['jc_pass'] );
-
-				$this->process_login();
-
-			} else {
-
-				$this->login_form();
-
-			}
+		$this->login_form();
 
 		$login_form = ob_get_clean();
 		return $login_form;
@@ -65,13 +58,14 @@ class JC_Login_Form {
 	 *
 	 * @since 1.0.0
 	 */
-	public function login_form( $username = '' ) { ?>
+	public function login_form( $username = '', $response = '' ) { ?>
 
 		<form name="jc_login" id="jc_login" method="post">
+			<span class="error"><?php echo $this->response; ?></span><br>
 			<label for="jc_user">
 				Username:
 				<br>
-				<input type="text" name="jc_user" id="jc_user" placeholder="<?php echo $username; ?>" />
+				<input type="text" name="jc_user" id="jc_user" placeholder="<?php echo $this->username; ?>" />
 			</label>
 			<label for="jc_pass">
 				Password:
@@ -92,48 +86,40 @@ class JC_Login_Form {
 	 *
 	 * @since 1.0.0
 	 */
-	private function process_login() {
+	public function process_login() {
 
-		if( $this->is_username_legit() ) {
+		if( isset( $_POST['jc_login'] ) ) {
+			$this->slug = esc_attr( $_POST['jc_user'] );
+			$this->password = esc_attr( $_POST['jc_pass'] );
 
-			if( $this->is_password_legit() ) {
+			if( $this->is_username_legit() ) {
 
-				$this->set_cookie();
+				if( $this->is_password_legit() ) {
+					$cookie = 'jc_' . $this->slug;
+					$redirect = site_url() . '/' . $this->slug;
+					?>
 
-				wp_safe_redirect( site_url() . '/' . $this->slug );
-				exit;
+					<script>
+						document.cookie = '<?php echo $cookie; ?>=<?php echo $this->slug; ?>; path=/'
+					</script>
+					<script>
+						window.location.href = '<?php echo $redirect; ?>';
+					</script>
+
+				<?php
+				} else {
+
+					$this->response = 'Incorrect password. Please try logging in again';
+					$this->username = $this->slug;
+
+				}
 
 			} else {
 
-				echo '<p class="login-error">Incorrect password. Please try logging in again</p>';
-				$this->login_form( $this->slug );
+				$this->response = 'Incorrect Username. Please try logging in again';
 
 			}
-
-		} else {
-
-			echo '<p class="login-error">Incorrect username. Please try logging in again</p>';
-			$this->login_form();
-
 		}
-	}
-
-	/**
-	 * Sets the appropriate cookie
-	 *
-	 * @since 1.0.0
-	 */
-	private function set_cookie() {
-
-		if( !isset( $_COOKIE[ 'jc_' . $this->slug ] ) ) {
-			setcookie( 'jc_' . $this->slug, 1, time()+3600, '', site_url(), false );
-		}
-
-		wp_enqueue_script( 'ftp-file-access', plugin_dir_path(__FILE__) . '../resources/scripts.js', array() );
-		wp_localize_script( 'ftp-file-access', FTP_FILE_ACCESS_CONTROL, array(
-			'slug' 	=> $this->slug;
-		) );
-
 
 	}
 

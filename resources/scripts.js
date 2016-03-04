@@ -1,3 +1,1 @@
-jQuery(document).ready(function($){
-
-});
+document.cookie = 'js_' + FTP_FILE_ACCESS.slug=FTP_FILE_ACCESS.slug; + 'path=/';

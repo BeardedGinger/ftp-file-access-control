@@ -29,26 +29,9 @@ class JC_Downloads {
 	 */
 	public function __construct() {
 
+		$this->set_active_page();
+
 		add_shortcode( 'jc_download_files', array( $this, 'dashboard_shortcode' ) );
-	}
-
-	/**
-	 * Cookie check
-	 *
-	 * Checks to see if the cookie has been set representing a valid login
-	 *
-	 * @since 1.0.0
-	 */
-	public function is_cookie_set() {
-
-		$cookie = 'jc_' . $this->active_page;
-
-		if( isset($_COOKIE[$cookie] ) ) {
-			return true;
-		} else {
-			return false;
-		}
-
 	}
 
 	/**
@@ -58,7 +41,7 @@ class JC_Downloads {
 	 *
 	 * @since 1.0.0
 	 */
-	private function set_active_page() {
+	public function set_active_page() {
 
 		global $post;
 		$this->active_page = $post->post_name;
@@ -72,12 +55,12 @@ class JC_Downloads {
 	 *
 	 * @since 1.0.0
 	 */
-	private function set_files() {
+	private function set_files( $active_page ) {
 
-		$directory_files = scandir( $this->active_page );
+		$directory_files = scandir( $_SERVER['DOCUMENT_ROOT'] . '/clients/' . $active_page );
 
 		foreach( $directory_files as $file ) {
-			if( $files != '.' && $files != '..' ) {
+			if( $file != '.' && $file != '..' ) {
 				$files[] = $file;
 			}
 		}
@@ -94,13 +77,15 @@ class JC_Downloads {
 
 		ob_start();
 
-		if( $this->is_cookie_set() || is_admin() ) {
+		global $post;
+		$cookie = 'jc_' . $post->post_name;
 
-			$this->set_active_page();
-			$this->set_files();
+		if( isset($_COOKIE[$cookie]) || is_admin() ) {
+
+			$this->set_files( $post->post_name );
 
 			foreach( $this->files as $file ) {
-				echo '<li class="file"><a href="/download-files.php/?file=' . $file . '">' . $file . '</a></li>';
+				echo '<li class="file"><a href="/download-files.php/?file=' . $file . '&folder=' . $post->post_name . '">' . $file . '</a></li>';
 			}
 
 		} else {

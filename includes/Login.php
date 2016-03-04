@@ -70,7 +70,7 @@ class JC_Login_Form {
 			<label for="jc_pass">
 				Password:
 				<br>
-				<input type="text" name="jc_pass" id="jc_pass" />
+				<input type="password" name="jc_pass" id="jc_pass" />
 			</label>
 			<input type="submit" value="Login" name="jc_login" />
 		</form>

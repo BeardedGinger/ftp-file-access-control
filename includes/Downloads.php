@@ -87,6 +87,7 @@ class JC_Downloads {
 			$this->set_files( $post->post_name );
 
 			foreach( $this->files as $file ) {
+				$file = urlencode($file);
 				echo '<li class="file"><a href="/download-files.php?file=' . $file . '&folder=' . $post->post_name . '">' . $file . '</a></li>';
 			}
 

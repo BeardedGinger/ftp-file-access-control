@@ -65,7 +65,7 @@ class JC_Login_Form {
 			<label for="jc_user">
 				Username:
 				<br>
-				<input type="text" name="jc_user" id="jc_user" placeholder="<?php echo $this->username; ?>" />
+				<input type="text" name="jc_user" id="jc_user" value="<?php echo $this->username; ?>" />
 			</label>
 			<label for="jc_pass">
 				Password:

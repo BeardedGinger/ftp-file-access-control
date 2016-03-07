@@ -21,6 +21,6 @@ if( isset( $_COOKIE['jc_' . $folder] ) ) {
     header_remove('Expires');
     //header('Expires:');
 
-    header('Content-type: wav');
+    header('Content-type: audio/wav');
     readfile($location);
 }

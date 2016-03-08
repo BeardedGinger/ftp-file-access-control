@@ -96,7 +96,7 @@ class JC_Login_Form {
 
 				if( $this->is_password_legit() ) {
 					$cookie = 'jc_' . $this->slug;
-					$redirect = site_url() . '/' . $this->slug;
+					$redirect = site_url() . '/client/' . $this->slug;
 					?>
 
 					<script>
@@ -135,11 +135,11 @@ class JC_Login_Form {
 	private function get_dashboard_pages() {
 
 		$args = array(
-			'meta_key' 		=> '_wp_page_template',
-			'meta_value' 	=> 'template-dashboard.php'
+			'post_type' 		=> 'client',
+			'posts_per_page' 	=> 300
 		);
 
-		$dashboard_pages = get_pages( $args );
+		$dashboard_pages = get_posts($args);
 
 		return $dashboard_pages;
 	}
@@ -155,10 +155,8 @@ class JC_Login_Form {
 		$dashboard_slugs = array();
 		$dashboard_pages = $this->get_dashboard_pages();
 
-		if( $dashboard_pages ) {
-			foreach( $dashboard_pages as $dashboard_slug ) {
-				$dashboard_slugs[] = $dashboard_slug->post_name;
-			}
+		foreach( $dashboard_pages as $client ) {
+			$dashboard_slugs[] = $client->post_name;
 		}
 
 		return $dashboard_slugs;

@@ -63,14 +63,12 @@ class JC_Login_Form {
 		<form name="jc_login" id="jc_login" method="post">
 			<span class="error"><?php echo $this->response; ?></span><br>
 			<label for="jc_user">
-				Username:
-				<br>
-				<input type="text" name="jc_user" id="jc_user" value="<?php echo $this->username; ?>" />
+				<span class="screen-reader-text">Username:</span>
+				<input type="text" name="jc_user" id="jc_user" placeholder="Username" value="<?php echo $this->username; ?>" />
 			</label>
 			<label for="jc_pass">
-				Password:
-				<br>
-				<input type="password" name="jc_pass" id="jc_pass" />
+				<span class="screen-reader-text">Password:</span>
+				<input type="password" name="jc_pass" placeholder="Password" id="jc_pass" />
 			</label>
 			<input type="submit" value="Login" name="jc_login" />
 		</form>

@@ -105,16 +105,26 @@ class JC_Login_Form {
 					</script>
 
 				<?php
-				} else {
+				} else { ?>
 
-					$this->response = 'Incorrect password. Please try logging in again';
-					$this->username = $this->slug;
+					<script>
+						window.location.href = '<?php echo site_url(); ?>/#jc-login-form';
+					</script>
+
+					<?php
+						$this->response = 'Incorrect password. Please try logging in again';
+						$this->username = $this->slug;
 
 				}
 
-			} else {
+			} else { ?>
 
-				$this->response = 'Incorrect Username. Please try logging in again';
+				<script>
+					window.location.href = '<?php echo site_url(); ?>/#jc-login-form';
+				</script>
+
+				<?php
+					$this->response = 'Incorrect Username. Please try logging in again';
 
 			}
 		}

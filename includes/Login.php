@@ -70,7 +70,7 @@ class JC_Login_Form {
 				<span class="screen-reader-text">Password:</span>
 				<input type="password" name="jc_pass" placeholder="Password" id="jc_pass" />
 			</label>
-			<input type="submit" value="Login" name="jc_login" />
+			<input type="submit" value="Access Downloads" name="jc_login" />
 		</form>
 
 	<?php
@@ -112,7 +112,7 @@ class JC_Login_Form {
 					</script>
 
 					<?php
-						$this->response = 'Incorrect password. Please try logging in again';
+						$this->response = 'Incorrect password.<br>Please try logging in again';
 						$this->username = $this->slug;
 
 				}
@@ -124,7 +124,7 @@ class JC_Login_Form {
 				</script>
 
 				<?php
-					$this->response = 'Incorrect Username. Please try logging in again';
+					$this->response = 'Incorrect Username.<br>Please try logging in again';
 
 			}
 		}

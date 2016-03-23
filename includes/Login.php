@@ -71,6 +71,7 @@ class JC_Login_Form {
 				<input type="password" name="jc_pass" placeholder="Password" id="jc_pass" />
 			</label>
 			<input type="submit" value="Access Downloads" name="jc_login" />
+			<a href="/forgot-password" class="forgot-password">Forgot Password?</a>
 		</form>
 
 	<?php
